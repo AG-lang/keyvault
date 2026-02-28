@@ -19,6 +19,14 @@
         />
       </div>
       <div class="toolbar-actions">
+        <button class="btn btn-sync" :class="{ connected: isConfigured }" @click="showSyncDialog = true" title="云端同步">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="17 1 21 5 17 9"></polyline>
+            <path d="M3 11V9a4 4 0 0 1 4-4h14"></path>
+            <polyline points="7 23 3 19 7 15"></polyline>
+            <path d="M21 13v2a4 4 0 0 1-4 4H3"></path>
+          </svg>
+        </button>
         <ImportExport @export="handleExport" @import="handleImportFile" />
         <button class="btn btn-primary" @click="openAddForm">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -83,6 +91,14 @@
       @cancel="cancelImport"
     />
 
+    <SyncDialog
+      v-if="showSyncDialog"
+      :keys="keys"
+      @close="showSyncDialog = false"
+      @upload="handleSyncUpload"
+      @download="handleSyncDownload"
+    />
+
     <Transition name="toast">
       <div v-if="toastVisible" class="toast">{{ toastMessage }}</div>
     </Transition>
@@ -94,12 +110,14 @@ import { ref, computed } from 'vue'
 import type { KeyItem } from './types'
 import { useKeys } from './composables/useKeys'
 import { useClipboard } from './composables/useClipboard'
+import { useSync } from './composables/useSync'
 import KeyCard from './components/KeyCard.vue'
 import KeyForm from './components/KeyForm.vue'
 import GroupTabs from './components/GroupTabs.vue'
 import ImportExport from './components/ImportExport.vue'
 import ConfirmDialog from './components/ConfirmDialog.vue'
 import ImportDialog from './components/ImportDialog.vue'
+import SyncDialog from './components/SyncDialog.vue'
 
 const {
   keys,
@@ -115,13 +133,16 @@ const {
   exportKeys,
   importKeys,
   checkDuplicates,
+  replaceAllKeys,
 } = useKeys()
 
-const { toastMessage, toastVisible } = useClipboard()
+const { toastMessage, toastVisible, showToast } = useClipboard()
+const { isConfigured, uploadToGist, downloadFromGist } = useSync()
 
 const showForm = ref(false)
 const editingItem = ref<KeyItem | null>(null)
 const deleteTarget = ref<KeyItem | null>(null)
+const showSyncDialog = ref(false)
 
 // Import state
 const importPending = ref(false)
@@ -213,5 +234,26 @@ function handleImportMode(mode: 'skip' | 'overwrite' | 'append') {
 function cancelImport() {
   importPending.value = false
   importJson.value = ''
+}
+
+// Sync
+async function handleSyncUpload() {
+  try {
+    await uploadToGist(keys.value)
+    showToast(`已上传 ${keys.value.length} 条密钥到云端`)
+  } catch (e: any) {
+    alert(`上传失败: ${e.message}`)
+  }
+}
+
+async function handleSyncDownload() {
+  try {
+    const remoteKeys = await downloadFromGist()
+    replaceAllKeys(remoteKeys)
+    showToast(`已从云端下载 ${remoteKeys.length} 条密钥`)
+    showSyncDialog.value = false
+  } catch (e: any) {
+    alert(`下载失败: ${e.message}`)
+  }
 }
 </script>

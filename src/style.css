@@ -619,6 +619,153 @@ body {
   background: #d13438;
 }
 
+/* ========== Sync Button ========== */
+.btn-sync {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border-radius: var(--radius);
+  background: var(--bg-secondary);
+  color: var(--text-muted);
+  border: 1px solid var(--border);
+  cursor: pointer;
+  transition: all var(--transition);
+}
+
+.btn-sync:hover {
+  color: var(--text-primary);
+  border-color: var(--border-hover);
+  background: var(--bg-hover);
+}
+
+.btn-sync.connected {
+  color: var(--success);
+  border-color: rgba(0, 210, 138, 0.3);
+}
+
+.btn-sync.connected:hover {
+  background: var(--success-soft);
+}
+
+/* ========== Sync Dialog Extras ========== */
+.sync-desc {
+  font-size: 13px;
+  color: var(--text-secondary);
+  margin-bottom: 22px;
+  line-height: 1.6;
+}
+
+.sync-error {
+  margin-top: 14px;
+  font-size: 12px;
+  color: var(--danger);
+  text-align: center;
+}
+
+.form-hint {
+  display: block;
+  margin-top: 6px;
+  font-size: 11px;
+  color: var(--text-placeholder);
+}
+
+.form-hint a {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.form-hint a:hover {
+  text-decoration: underline;
+}
+
+.gist-options {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.radio-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: var(--text-secondary);
+  cursor: pointer;
+}
+
+.radio-label input[type="radio"] {
+  accent-color: var(--accent);
+  width: auto;
+}
+
+.sync-status {
+  margin-bottom: 22px;
+}
+
+.sync-info-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.sync-info-row:last-child {
+  border-bottom: none;
+}
+
+.sync-label {
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+.sync-connected {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--success);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.sync-connected::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--success);
+}
+
+.sync-gist-id {
+  font-family: 'SF Mono', 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--text-secondary);
+  background: var(--bg-input);
+  padding: 3px 8px;
+  border-radius: 6px;
+}
+
+.sync-actions {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.sync-btn {
+  flex: 1;
+  justify-content: center;
+}
+
+.btn-sm {
+  font-size: 11px;
+  padding: 5px 12px;
+  color: var(--text-muted);
+}
+
 /* ========== Import/Export ========== */
 .import-export {
   display: flex;

@@ -154,6 +154,10 @@ export function useKeys() {
     }
   }
 
+  function replaceAllKeys(newKeys: KeyItem[]) {
+    keys.value = newKeys
+  }
+
   return {
     keys,
     searchQuery,
@@ -168,5 +172,6 @@ export function useKeys() {
     exportKeys,
     importKeys,
     checkDuplicates,
+    replaceAllKeys,
   }
 }

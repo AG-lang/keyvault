@@ -32,5 +32,5 @@ export function useClipboard() {
     }, 2000)
   }
 
-  return { copyToClipboard, toastMessage, toastVisible }
+  return { copyToClipboard, showToast, toastMessage, toastVisible }
 }
